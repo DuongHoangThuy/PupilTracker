@@ -16,37 +16,39 @@ clc;
 %% Extracting Frames
   
 vidObj=videoinput('winvideo',1, 'YUY2_640x480');		% Storing the video as an object | input from camera/webcam
-set(vidObj,'ReturnedColorSpace','grayscale'); 
-numFrames = 5;								% Number of frames to be captured for analysis to be carried out
+set(vidObj,'ReturnedColorSpace','grayscale');           % greyscale laao
+triggerconfig(vidObj, 'manual');
+
+numFrames = 5;                                          % Number of frames to be captured for analysis to be carried out
 figure
 
-for i=1:numFrames 								% X-axis for the plot /  time instants
-X(i)=i;
-end
+
+% for i=1:numFrames                                   	% X-axis for the plot /  time instants
+% X(i)=i;
+% end
    
-for i=1:numFrames 								% Iterating pupil detection for every frame  
+for i=1:numFrames                                   	% Iterating pupil detection for every frame  
     
-    cropped=getsnapshot(vidObj);	
+    cropped = getsnapshot(vidObj);	
        
-    subplot(2, 1, 1);
-    imshow(cropped);							% Display present frame on which detected circle is drawn
+    subplot(2, 1, 1), imshow(cropped);                    % Display present frame on which detected circle is drawn
        
-    bw = im2bw(cropped,0.225);					% Thresholding the input frame
+    bw = im2bw(cropped,0.225);                          % Thresholding the input frame
     [centersDark, radiiDark] = imfindcircles(bw,[15 30],'ObjectPolarity','dark');		% Approximating pupil to circle ;  deducing centers and radius 
      
-    if isempty(radiiDark)							% Incase there is no pupil in the present image / eye blink
+    if isempty(radiiDark)                           	% Incase there is no pupil in the present image / eye blink
         radii(i)= 0;				
     else						
         radii(i)=radiiDark(1);							% appending all radii to a list
     end
     
-    viscircles(centersDark,radii(i),'EdgeColor','b');		% Drawing circles for the approximated pupil
+    viscircles(centersDark,radii(i),'EdgeColor','b');	% Drawing circles for the approximated pupil
     
     subplot(2,1,2);
-    plot(X,radii(i));
+    % plot(X,radii(i));
 end
 
-subplot(2,1,2);
-plot(X,radii);	
+%subplot(2,1,2);
+%plot(X,radii);	
 
 
