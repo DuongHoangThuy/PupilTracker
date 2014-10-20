@@ -35,8 +35,12 @@ while(closeflag)                                % infinite loop
     subplot(1,2,2), imshow(thresholded_image);  % display the image
         
     %% next we extract circles from this baby...
-    [centers, radii] = imfindcircles(thresholded_image,[10 50],'ObjectPolarity','dark');
-    disp(centers);
+    % from http://stackoverflow.com/questions/20400873/detect-a-circular-shape-inside-image-in-matlab we discover that imfindcircles() is insanely slow. There are better ways to find this object.
+    % am increasing the sensitivity
+    [centers, radii] = imfindcircles(thresholded_image,[15 25], 'ObjectPolarity','dark','Sensitivity',0.94); 
+    if ~isempty(centers) 
+      subplot(1,2,2), viscircles(centers, radii,'EdgeColor','b');
+    end
     
     pause(0.001);                               % much less than 30 fps. wihtout this it doesn't seem to work
 end% Preview
