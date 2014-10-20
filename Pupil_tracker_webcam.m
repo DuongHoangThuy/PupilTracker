@@ -28,7 +28,7 @@ closeflag = 1;                                  % for now this doesn't really do
 while(closeflag)                                % infinite loop
     %% first we acquire the feed and crop out unrequired parts to speed it all up
     acquired_snapshot = getsnapshot(vid);       % acquire single image from feed
-    cropped_snapshot = imcrop(acquired_snapshot,[85 50 140 112]);   % crop it out so that you can see just the center ref: http://www.mathworks.in/help/images/ref/imcrop.html
+    cropped_snapshot = imcrop(acquired_snapshot,[95 45 150 110]);   % crop it out so that you can see just the center ref: http://www.mathworks.in/help/images/ref/imcrop.html
     % subplot(1,2,1), 
     imshow(cropped_snapshot);  % normal camera (greyscale)
     
@@ -40,7 +40,7 @@ while(closeflag)                                % infinite loop
     [centers, radii] = imfindcircles(thresholded_image,[10 17], 'ObjectPolarity','dark','Sensitivity',0.91); 
     if ~isempty(centers)                        % plot only if circle is detected.. ~ is logical not. simple error handling for viscircles
       %subplot(1,2,2), 
-      viscircles(centers, radii,'EdgeColor','b');
+      viscircles(centers, radii,'EdgeColor','b', 'LineWidth', 1);
     end
     
     pause(0.001);                               % much less than 30 fps. wihtout this it doesn't seem to work
