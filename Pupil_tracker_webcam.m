@@ -16,6 +16,7 @@ clc;
 %% Extracting Frames
   
 vidObj=videoinput('winvideo',1, 'YUY2_640x480');		% Storing the video as an object | input from camera/webcam
+set(vidObj,'ReturnedColorSpace','grayscale'); 
 numFrames = 5;								% Number of frames to be captured for analysis to be carried out
 figure
 
