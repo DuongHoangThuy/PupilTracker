@@ -1,9 +1,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 																 
-%    Aim : Pupil Detection - Latency measurement							 
-%    Author : Sandeep Konam											 
-%    Collaborators : Ayush Sagar, Dhruv Joshi, Sanketh Vedula					 
-%    Organization : Srujana Innovation Center, LVEPI						 	 
+%    Aim : Pupil detection and diameter plot							 
+%    Authors : Sandeep Konam, Dhruv Joshi											 
+%    Acknowledgements : Sujeath Pareddy			 
+%    Organization : Srujana - Center for Innovation, LVEPI						 	 
 %																 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -13,42 +13,24 @@ close all;
 clear all;
 clc;
 
-%% Extracting Frames
-  
-vidObj=videoinput('winvideo',1, 'YUY2_640x480');		% Storing the video as an object | input from camera/webcam
-set(vidObj,'ReturnedColorSpace','grayscale');           % greyscale laao
-triggerconfig(vidObj, 'manual');
+vid = videoinput('winvideo', 1,'YUY2_320x240');          % Video Parameters
+set(vid,'ReturnedColorSpace','grayscale');      % acquire in greyscale
+triggerconfig(vid, 'manual');					% manual trigger, increase speed
 
-numFrames = 5;                                          % Number of frames to be captured for analysis to be carried out
-figure
+start(vid);                                     % start acquiring from imaqwindow
+gcf = figure;                                   % figure
 
+set(gcf,'CloseRequestFcn',@my_closefcn)			% this is incomplete
+hold on;										% image will persist
+closeflag = 1;                                  % for now this doesn't really do anythng
 
-% for i=1:numFrames                                   	% X-axis for the plot /  time instants
-% X(i)=i;
-% end
-   
-for i=1:numFrames                                   	% Iterating pupil detection for every frame  
+while(closeflag)                                % infinite loop
+    acquired_snapshot = getsnapshot(vid);       % acquire single image from feed
+    subplot(1,2,1), imshow(acquired_snapshot);  % normal camera (greyscale)
     
-    cropped = getsnapshot(vidObj);	
-       
-    subplot(2, 1, 1), imshow(cropped);                    % Display present frame on which detected circle is drawn
-       
-    bw = im2bw(cropped,0.225);                          % Thresholding the input frame
-    [centersDark, radiiDark] = imfindcircles(bw,[15 30],'ObjectPolarity','dark');		% Approximating pupil to circle ;  deducing centers and radius 
-     
-    if isempty(radiiDark)                           	% Incase there is no pupil in the present image / eye blink
-        radii(i)= 0;				
-    else						
-        radii(i)=radiiDark(1);							% appending all radii to a list
-    end
+    thresholded_image = im2bw(acquired_snapshot,0.37);   % threshold karo... this value has been obtained after playing around
+    subplot(1,2,2), imshow(thresholded_image);  % display the image
+    pause(0.001);                               % much less than 30 fps. wihtout this it doesn't seem to work
     
-    viscircles(centersDark,radii(i),'EdgeColor','b');	% Drawing circles for the approximated pupil
     
-    subplot(2,1,2);
-    % plot(X,radii(i));
-end
-
-%subplot(2,1,2);
-%plot(X,radii);	
-
-
+end% Preview
