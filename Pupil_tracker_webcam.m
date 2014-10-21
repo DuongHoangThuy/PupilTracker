@@ -46,10 +46,11 @@ while(closeflag)                                % infinite loop
       %subplot(1,2,2), 
       viscircles(centers, radii,'EdgeColor','b', 'LineWidth', 1);
       %disp(radii(1))% just seeing radii range
+      figure(2);
       t = [0:0.01:10]; %check if it's working
       y = radii(1);
-      plot(t,y),xlabel('x'),ylabel('Pupilradii');
-      axis([8.5 13 -5 5]);
+      plot(t,y),xlabel('time'),ylabel('Pupilradii');
+      axis([-5 5 8.5 13]);
     end
     
     pause(0.001);                               % much less than 30 fps. wihtout this it doesn't seem to work
