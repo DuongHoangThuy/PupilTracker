@@ -50,7 +50,7 @@ while(closeflag)                                % infinite loop
       
       y = radii(1);
       drawnow
-      subplot(1,2,2), plot(t, y, '-o'),xlabel('x'),ylabel('Pupilradii');
+      subplot(1,2,2), plot(t, y, '-o'),xlabel('time'),ylabel('Pupil radius');
       t = t + 1;
       % axes([t-5 t+5]);
     end
