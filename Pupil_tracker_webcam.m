@@ -34,7 +34,7 @@ closeflag = 1;                                  % for now this doesn't really do
 while(closeflag)                                % infinite loop
     %% first we acquire the feed and crop out unrequired parts to speed it all up
     acquired_snapshot = getsnapshot(vid);       % acquire single image from feed
-    cropped_snapshot = imcrop(acquired_snapshot,[95 45 150 110]);   % crop it out so that you can see just the center ref: http://www.mathworks.in/help/images/ref/imcrop.html
+    cropped_snapshot = imcrop(acquired_snapshot,[110 30 130 110]);   % crop it out so that you can see just the center ref: http://www.mathworks.in/help/images/ref/imcrop.html
     subplot(1,2,1),         imshow(cropped_snapshot);  % normal camera (greyscale)
     
     %% Then we threshold it to some value of threshold to be able to get the pupil out
