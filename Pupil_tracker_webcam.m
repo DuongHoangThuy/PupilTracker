@@ -34,8 +34,7 @@ while(closeflag)                                % infinite loop
     %% first we acquire the feed and crop out unrequired parts to speed it all up
     acquired_snapshot = getsnapshot(vid);       % acquire single image from feed
     cropped_snapshot = imcrop(acquired_snapshot,[95 45 150 110]);   % crop it out so that you can see just the center ref: http://www.mathworks.in/help/images/ref/imcrop.html
-    % subplot(1,2,1),         
-    imshow(cropped_snapshot);  % normal camera (greyscale)
+    subplot(1,2,1),         imshow(cropped_snapshot);  % normal camera (greyscale)
     
     %% Then we threshold it to some value of threshold to be able to get the pupil out
     thresholded_image = im2bw(cropped_snapshot,0.37);   % threshold karo... this value has been obtained after playing around
@@ -46,6 +45,7 @@ while(closeflag)                                % infinite loop
     if ~isempty(centers)                        % plot only if circle is detected.. ~ is logical not. simple error handling for viscircles
       %subplot(1,2,2), 
       viscircles(centers, radii,'EdgeColor','b', 'LineWidth', 1);
+      disp(radii(1))                            % just seeing radii range
     end
     
     pause(0.001);                               % much less than 30 fps. wihtout this it doesn't seem to work
