@@ -13,6 +13,7 @@
 close all;
 clear all;
 clc;
+t = 0;  % initialize time
 
 vid = videoinput('winvideo', 1,'YUY2_320x240');          % Video Parameters
 
@@ -42,14 +43,16 @@ while(closeflag)                                % infinite loop
         
     %% next we extract circles from this baby...and plot them if they are found
     [centers, radii] = imfindcircles(thresholded_image,[8 15], 'ObjectPolarity','dark','Sensitivity',0.91); 
+    
     if ~isempty(centers)                        % plot only if circle is detected.. ~ is logical not. simple error handling for viscircles
-      %subplot(1,2,2), 
       viscircles(centers, radii,'EdgeColor','b', 'LineWidth', 1);
-      %disp(radii(1))% just seeing radii range
-      t = [0:0.01:10]; %check if it's working
+      % disp(radii(1))                          % just seeing radii range
+      
       y = radii(1);
-      plot(t,y),xlabel('x'),ylabel('Pupilradii');
-      axis([8.5 13 -5 5]);
+      drawnow
+      subplot(1,2,2), plot(t, y, '-o'),xlabel('x'),ylabel('Pupilradii');
+      t = t + 1;
+      % axes([t-5 t+5]);
     end
     
     pause(0.001);                               % much less than 30 fps. wihtout this it doesn't seem to work
