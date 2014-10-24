@@ -13,7 +13,10 @@
 close all;
 clear all;
 clc;
-t = 0;  % initialize time
+
+%% the following variables will be used to measure the time
+t1 = clock;
+t = 0;  
 
 vid = videoinput('winvideo', 1,'YUY2_320x240');          % Video Parameters
 
