@@ -48,11 +48,21 @@ while(closeflag)                                % infinite loop
       viscircles(centers, radii,'EdgeColor','b', 'LineWidth', 1);
       % disp(radii(1))                          % just seeing radii range
       
-      y = radii(1);
+      % all the plotting...
+      y = radii(1);                             % radii(1) is the first returned radius, converted to y-variable
+      t2 = clock;                               % finding out the time elapsed
       drawnow
-      subplot(1,2,2), plot(t, y, '-o'),xlabel('time'),ylabel('Pupil radius');
-      t = t + 1;
-      % axes([t-5 t+5]);
+      subplot(1,2,2);
+      hold on;                                  % this will let us see the previous values also by rapidly auto-changing the x-axis i.e plot won't refresh new values will plotted on the same plot
+      pointsArray = [];                         % creating an appendable empty array
+      pointsArray = [pointsArray;[etime(t2,t1)*1000, y]];      % appending the array with the new entries
+       if t == 0
+         plot(pointsArray(t+1),pointsArray(t+1,2), '--o','linewidth',1.0),xlabel('time in 10ms'),ylabel('Pupil radius'); %pllotting the points by taking the value from the array
+       end
+       if t ~= 0 
+           plot(pointsArray(t+1),pointsArray(t+1,2), '--o','linewidth',1.0),xlabel('time in 10ms'),ylabel('Pupil radius');%should work on this part this should give lines
+           plot(pointsArray(t,:),pointsArray(t+1,:));
+       end
     end
     
     pause(0.001);                               % much less than 30 fps. wihtout this it doesn't seem to work
