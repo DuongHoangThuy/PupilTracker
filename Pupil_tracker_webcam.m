@@ -17,6 +17,8 @@ clc;
 pointsArray = [];                         % creating an appendable empty array
 
 %% open the arduino object. Setup all the arduino stuff (including fixed brightness for IR LEDs and white LED
+% http://playground.arduino.cc/Interfacing/Matlab
+% http://www.mathworks.in/help/supportpkg/arduinoio/examples/getting-started-with-matlab-support-package-for-arduino-hardware.html?prodcode=ML
 a = arduino();
 ir_brightness = 0.8;    % this needs to be in the range (0,1). This value is optimized for our specific case
 ir = 9;
