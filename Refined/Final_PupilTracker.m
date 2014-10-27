@@ -1,10 +1,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                %  
 %    Aim : Pupil detection and radius vs time plot               %				 
-%    Authors : Sandeep Konam, Dhruv Joshi						 %					 
+%    Authors : Sandeep Konam, Dhruv Joshi				     %					 
 %    Acknowledgements : Sujeath Pareddy, Sanketh Vedula          %
-%    Organization : Srujana - Center for Innovation, LVEPI		 %				 	 
-%																 %
+%    Organization : Srujana - Center for Innovation, LVEPI	     %				 	 
+%										     %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Approach : Extracting frames -> Hard Thresholding the frame at hand  -> cropping out excess -> Circle Detection(Pupil Approximation) -> Radius measurement -> Plotting the graph
