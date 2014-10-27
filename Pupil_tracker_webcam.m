@@ -57,7 +57,7 @@ while(closeflag)                                % infinite loop
     % subplot(1,2,2),         imshow(thresholded_image);  % display the image
         
     %% next we extract circles from this baby...and plot them if they are found
-    [centers, radii] = imfindcircles(thresholded_image,[10 20], 'ObjectPolarity','dark','Sensitivity',0.91); 
+    [centers, radii] = imfindcircles(thresholded_image,[10 20], 'ObjectPolarity','dark','Sensitivity',0.85); 
     
     if ~isempty(centers)                        % plot only if circle is detected.. ~ is logical not. simple error handling for viscircles
       viscircles(centers, radii,'EdgeColor','b', 'LineWidth', 1);
