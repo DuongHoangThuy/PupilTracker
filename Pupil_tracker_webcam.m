@@ -19,6 +19,9 @@ t = 0;                                                   % initialize time
 
 pointsArray = [];                         % creating an appendable empty array
 
+% open the arduino object..
+a = arduino();
+
 %% declare the video object
 vid = videoinput('winvideo', 1,'YUY2_320x240');          % Video Parameters
 
