@@ -22,8 +22,6 @@ pointsArray = [];                         % creating an appendable empty array
 a = arduino();
 ir_brightness = 0.8;    % this needs to be in the range (0,1). This value is optimized for our specific case
 ir = 9;
-white = 10;         % connected to PWM pin10
-white_power = 0.1;
 
 % writing to the LED via PWM...
 writePWMDutyCycle(a, ir, ir_brightness);
@@ -46,7 +44,7 @@ set(gcf,'CloseRequestFcn',@my_closefcn)			% this is incomplete
 closeflag = 1;                                  % for now this doesn't really do anythng
 
 subplot(1,2,1); 
-btn = uicontrol('Style', 'pushbutton', 'String', 'EXCITE', 'Position', [20 20 50 20], 'Callback', '');
+btn = uicontrol('Style', 'pushbutton', 'String', 'EXCITE', 'Position', [20 20 50 20], 'Callback', @exciteKaro);
 hold on;										% image will persist
 
 %% the following variables will be used to measure the time
