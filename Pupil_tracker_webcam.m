@@ -19,8 +19,15 @@ t = 0;                                                   % initialize time
 
 pointsArray = [];                         % creating an appendable empty array
 
-% open the arduino object..
+%% open the arduino object. Setup all the arduino stuff (including fixed brightness for IR LEDs and white LED
 a = arduino();
+ir_brightness = 0.7;    % this needs to be in the range (0,1). This value is optimized for our specific case
+ir = 9;
+white = 10;         % connected to PWM pin10
+white_power = 0.1;
+
+% writing to the LED via PWM...
+writePWMDutyCycle(a, ir, ir_brightness);
 
 %% declare the video object
 vid = videoinput('winvideo', 1,'YUY2_320x240');          % Video Parameters
