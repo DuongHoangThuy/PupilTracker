@@ -1,51 +1,74 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 																 
-%    Aim : Pupil Detection - Latency measurement							 
-%    Author : Sandeep Konam											 
-%    Collaborators : Ayush Sagar, Dhruv Joshi, Sanketh Vedula					 
-%    Organization : Srujana Innovation Center, LVEPI						 	 
+%    Aim : Pupil detection and diameter plot							 
+%    Authors : Dhruv Joshi											 
+%    Acknowledgements : Sujeath Pareddy, Sandeep Konam
+%    Organization : Srujana - Center for Innovation, LVEPI						 	 
 %																 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Approach :: Extracting frames -> Thresholding the frame at hand  -> Circle Detection(Pupil Approximation) -> Radius measurement -> Plotting the graph
+% Approach :: Extracting frames -> Thresholding the frame at hand  -> cropping out excess -> Circle Detection(Pupil Approximation) -> Radius measurement -> Plotting the graph
+% to be able to see the two feeds (greyscale and thresholded) simultaneously, uncomment the subplot part.
 
 close all;
 clear all;
 clc;
+%% the following variables will be used to measure the time
+t1 = clock;
+t = 0;                                                   % initialize time
 
-%% Extracting Frames
-  
-vidObj=videoinput('winvideo',1, 'YUY2_640x480');		% Storing the video as an object | input from camera/webcam
-numFrames = 5;								% Number of frames to be captured for analysis to be carried out
-figure
+pointsArray = [];                         % creating an appendable empty array
 
-for i=1:numFrames 								% X-axis for the plot /  time instants
-X(i)=i;
-end
-   
-for i=1:numFrames 								% Iterating pupil detection for every frame  
+%% declare the video object
+vid = videoinput('winvideo', 1,'YUY2_320x240');          % Video Parameters
+
+% next we print out the properties of the webcam. 
+src = getselectedsource(vid);
+get(src)
+
+set(vid,'ReturnedColorSpace','grayscale');      % acquire in greyscale
+triggerconfig(vid, 'manual');					% manual trigger, increase speed
+
+start(vid);                                     % start acquiring from imaqwindow
+gcf = figure;                                   % figure
+
+set(gcf,'CloseRequestFcn',@my_closefcn)			% this is incomplete
+hold on;										% image will persist
+closeflag = 1;                                  % for now this doesn't really do anythng
+
+while(closeflag)                                % infinite loop
+    %% first we acquire the feed and crop out unrequired parts to speed it all up
+    acquired_snapshot = getsnapshot(vid);       % acquire single image from feed
+    cropped_snapshot = imcrop(acquired_snapshot,[110 30 130 110]);   % crop it out so that you can see just the center ref: http://www.mathworks.in/help/images/ref/imcrop.html
+    subplot(1,2,1),         imshow(cropped_snapshot);  % normal camera (greyscale)
     
-    cropped=getsnapshot(vidObj);	
-       
-    subplot(2, 1, 1);
-    imshow(cropped);							% Display present frame on which detected circle is drawn
-       
-    bw = im2bw(cropped,0.225);					% Thresholding the input frame
-    [centersDark, radiiDark] = imfindcircles(bw,[15 30],'ObjectPolarity','dark');		% Approximating pupil to circle ;  deducing centers and radius 
-     
-    if isempty(radiiDark)							% Incase there is no pupil in the present image / eye blink
-        radii(i)= 0;				
-    else						
-        radii(i)=radiiDark(1);							% appending all radii to a list
+    %% Then we threshold it to some value of threshold to be able to get the pupil out
+    thresholded_image = im2bw(cropped_snapshot,0.37);   % threshold karo... this value has been obtained after playing around
+    %subplot(1,2,2),         imshow(thresholded_image);  % display the image
+        
+    %% next we extract circles from this baby...and plot them if they are found
+    [centers, radii] = imfindcircles(thresholded_image,[10 20], 'ObjectPolarity','dark','Sensitivity',0.91); 
+    
+    if ~isempty(centers)                        % plot only if circle is detected.. ~ is logical not. simple error handling for viscircles
+      viscircles(centers, radii,'EdgeColor','b', 'LineWidth', 1);
+      % disp(radii(1))                          % just seeing radii range
+      % all the plotting...
+      y = radii(1);                              % radii(1) is the first returned radius, converted to y-variable
+      t2 = clock;                               % finding out the time elapsed
+      drawnow
+      subplot(1,2,2);
+      hold on;                                  % this will let us see the previous values also by rapidly auto-changing the x-axis i.e plot won't refresh new values will plotted on the same plot
+      
+      pointsArray = [pointsArray;[etime(t2,t1)*1000, y]]      % appending the array with the new entries
+       if t == 0
+         plot(pointsArray(t+1),pointsArray(t+1,2), 'linewidth',1.0),xlabel('time in 10ms'),ylabel('Pupil radius'); %pllotting the points by taking the value from the array
+       end
+       if t ~= 0 
+           plot(pointsArray(t:t+1),pointsArray(t:t+1,2), 'linewidth',1.0),xlabel('time in 10ms'),ylabel('Pupil radius');%should work on this part this should give lines
+           % plot(pointsArray(t),pointsArray(t+1,2), 'linewidth',1.0);
+       end
+       t = t + 1;                               % t just counts the iterations
     end
-    
-    viscircles(centersDark,radii(i),'EdgeColor','b');		% Drawing circles for the approximated pupil
-    
-    subplot(2,1,2);
-    plot(X,radii(i));
-end
-
-subplot(2,1,2);
-plot(X,radii);	
-
-
+   
+    pause(0.001);                               % much less than 30 fps. wihtout this it doesn't seem to work
+end% Preview
