@@ -40,8 +40,12 @@ start(vid);                                     % start acquiring from imaqwindo
 gcf = figure;                                   % figure
 
 set(gcf,'CloseRequestFcn',@my_closefcn)			% this is incomplete
-hold on;										% image will persist
+
 closeflag = 1;                                  % for now this doesn't really do anythng
+
+subplot(1,2,1); 
+btn = uicontrol('Style', 'pushbutton', 'String', 'EXCITE', 'Position', [20 20 50 20], 'Callback', '');
+hold on;										% image will persist
 
 %% the following variables will be used to measure the time
 t1 = clock;                                     % initialize time
@@ -51,7 +55,7 @@ while(closeflag)                                % infinite loop
     %% first we acquire the feed and crop out unrequired parts to speed it all up
     acquired_snapshot = getsnapshot(vid);       % acquire single image from feed
     cropped_snapshot = imcrop(acquired_snapshot,[110 30 130 110]);   % crop it out so that you can see just the center ref: http://www.mathworks.in/help/images/ref/imcrop.html
-    subplot(1,2,1),         imshow(cropped_snapshot);  % normal camera (greyscale)
+    subplot(1,2,1), imshow(cropped_snapshot);  % normal camera (greyscale)
     
     %% Then we threshold it to some value of threshold to be able to get the pupil out
     thresholded_image = im2bw(cropped_snapshot,0.30);   % threshold karo... this value has been obtained after playing around
@@ -68,7 +72,7 @@ while(closeflag)                                % infinite loop
       t2 = clock;                               % finding out the time elapsed
       drawnow
       subplot(1,2,2);
-      hold on;                                  % this will let us see the previous values also by rapidly auto-changing the x-axis i.e plot won't refresh new values will plotted on the same plot
+      hold on;
       
       pointsArray = [pointsArray;[etime(t2,t1)*1000, y]]      % appending the array with the new entries
        if t == 0
