@@ -13,9 +13,6 @@
 close all;
 clear all;
 clc;
-%% the following variables will be used to measure the time
-t1 = clock;
-t = 0;                                                   % initialize time
 
 pointsArray = [];                         % creating an appendable empty array
 
@@ -45,6 +42,10 @@ gcf = figure;                                   % figure
 set(gcf,'CloseRequestFcn',@my_closefcn)			% this is incomplete
 hold on;										% image will persist
 closeflag = 1;                                  % for now this doesn't really do anythng
+
+%% the following variables will be used to measure the time
+t1 = clock;                                     % initialize time
+t = 0;                                                   
 
 while(closeflag)                                % infinite loop
     %% first we acquire the feed and crop out unrequired parts to speed it all up
