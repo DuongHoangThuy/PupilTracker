@@ -21,7 +21,7 @@ pointsArray = [];                         % creating an appendable empty array
 
 %% open the arduino object. Setup all the arduino stuff (including fixed brightness for IR LEDs and white LED
 a = arduino();
-ir_brightness = 0.7;    % this needs to be in the range (0,1). This value is optimized for our specific case
+ir_brightness = 0.8;    % this needs to be in the range (0,1). This value is optimized for our specific case
 ir = 9;
 white = 10;         % connected to PWM pin10
 white_power = 0.1;
@@ -53,8 +53,8 @@ while(closeflag)                                % infinite loop
     subplot(1,2,1),         imshow(cropped_snapshot);  % normal camera (greyscale)
     
     %% Then we threshold it to some value of threshold to be able to get the pupil out
-    thresholded_image = im2bw(cropped_snapshot,0.37);   % threshold karo... this value has been obtained after playing around
-    %subplot(1,2,2),         imshow(thresholded_image);  % display the image
+    thresholded_image = im2bw(cropped_snapshot,0.30);   % threshold karo... this value has been obtained after playing around
+    % subplot(1,2,2),         imshow(thresholded_image);  % display the image
         
     %% next we extract circles from this baby...and plot them if they are found
     [centers, radii] = imfindcircles(thresholded_image,[10 20], 'ObjectPolarity','dark','Sensitivity',0.91); 
