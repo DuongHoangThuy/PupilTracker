@@ -19,7 +19,7 @@ t = 0;                                    % initialize time | x-axis for the gra
 pointsArray = [];                         % creating an appendable empty array | To append time(x-axis) and radius(y-axis)
 frameCount = 0;                           % For the purpose of couting the processed frames
 %% declare the video object
-vid = videoinput('winvideo', 2,'YUY2_320x240');          % Video Parameters
+vid = videoinput('winvideo', 1,'YUY2_320x240');          % Video Parameters
 %vid = videoinput('winvideo', 1,'YUY2_320x240');          % Video Parameters
 % Print out the properties of the webcam. 
 src = getselectedsource(vid);
