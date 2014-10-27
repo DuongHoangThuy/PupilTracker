@@ -15,7 +15,7 @@ clear all;
 clc;
 
 %% the following variables will be used to measure the time
-t1 = clock;
+
 t = 0;  
 pointsArray = [];                         % creating an appendable empty array
 
