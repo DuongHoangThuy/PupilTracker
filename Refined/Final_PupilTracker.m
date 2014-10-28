@@ -71,3 +71,5 @@ end
 if(frameCount==numFrames)
     delete(vid);                                    % Deleting the video object, once the graph is plotted
 end
+
+xlswrite('Patient.xls',AllRadius(:));               % Saving it in a xls file
