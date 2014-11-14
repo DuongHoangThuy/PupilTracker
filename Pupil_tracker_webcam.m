@@ -76,7 +76,7 @@ while(closeflag)                                % infinite loop
       subplot(1,2,2);
       hold on;
       
-      pointsArray = [pointsArray;[etime(t2,t1)*1000, y]]      % appending the array with the new entries
+      pointsArray = [pointsArray;[etime(t2,t1)*1000, y]];      % appending the array with the new entries
        if t == 0
          plot(pointsArray(t+1),pointsArray(t+1,2), 'linewidth',1.0),xlabel('time in 10ms'),ylabel('Pupil radius'); %pllotting the points by taking the value from the array
        end
