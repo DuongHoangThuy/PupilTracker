@@ -39,10 +39,10 @@ triggerconfig(vid, 'manual');					% manual trigger, increase speed
 start(vid);                                     % start acquiring from imaqwindow
 gcf = figure;                                   % figure
 
-set(gcf,'CloseRequestFcn',@my_closefcn)			% this is incomplete
+closeflag = 1;
 
-closeflag = 1;                                  % for now this doesn't really do anythng
-
+set(gcf,'CloseRequestFcn',{@my_closefcn, vid, closeflag})			% this is incomplete
+                                 
 subplot(1,2,1); 
 
 % to pass arguments to callback functions http://stackoverflow.com/questions/16693464/matlab-callback-function-only-sees-one-parameter-passed-to-it
