@@ -44,7 +44,9 @@ set(gcf,'CloseRequestFcn',@my_closefcn)			% this is incomplete
 closeflag = 1;                                  % for now this doesn't really do anythng
 
 subplot(1,2,1); 
-btn = uicontrol('Style', 'pushbutton', 'String', 'EXCITE', 'Position', [20 20 50 20], 'Callback', @exciteKaro);
+
+% to pass arguments to callback functions http://stackoverflow.com/questions/16693464/matlab-callback-function-only-sees-one-parameter-passed-to-it
+btn = uicontrol('Style', 'pushbutton', 'String', 'EXCITE', 'Position', [20 20 50 20], 'Callback', {@exciteKaro, a});
 hold on;										% image will persist
 
 %% the following variables will be used to measure the time
