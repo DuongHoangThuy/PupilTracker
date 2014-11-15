@@ -4,5 +4,8 @@ function my_closefcn(source,callbackdata, vid, closeflag)
   hold off
   delete(gcf);
   delete(vid);
+  fclose(s)
+  delete(s)
+  clear s
   close all;
 end

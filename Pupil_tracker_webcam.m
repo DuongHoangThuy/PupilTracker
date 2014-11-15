@@ -19,12 +19,16 @@ pointsArray = [];                         % creating an appendable empty array
 %% open the arduino object. Setup all the arduino stuff (including fixed brightness for IR LEDs and white LED
 % http://playground.arduino.cc/Interfacing/Matlab
 % http://www.mathworks.in/help/supportpkg/arduinoio/examples/getting-started-with-matlab-support-package-for-arduino-hardware.html?prodcode=ML
+%{
 a = arduino();
 ir_brightness = 0.8;    % this needs to be in the range (0,1). This value is optimized for our specific case
 ir = 9;
 
 % writing to the LED via PWM...
 writePWMDutyCycle(a, ir, ir_brightness);
+%}
+s = serial('COM10');      % serial communication object, change com port as needed
+fopen(s)                  % open the serial port for comm
 
 %% declare the video object
 vid = videoinput('winvideo', 1,'YUY2_320x240');          % Video Parameters
@@ -46,7 +50,7 @@ set(gcf,'CloseRequestFcn',{@my_closefcn, vid, closeflag})			% this is incomplete
 subplot(1,2,1); 
 
 % to pass arguments to callback functions http://stackoverflow.com/questions/16693464/matlab-callback-function-only-sees-one-parameter-passed-to-it
-btn = uicontrol('Style', 'pushbutton', 'String', 'EXCITE', 'Position', [20 20 50 20], 'Callback', {@exciteKaro, a});
+btn = uicontrol('Style', 'pushbutton', 'String', 'EXCITE', 'Position', [20 20 50 20], 'Callback', {@exciteKaro, s});
 hold on;										% image will persist
 
 %% the following variables will be used to measure the time
@@ -89,3 +93,7 @@ while(closeflag)                                % infinite loop
    
     pause(0.001);                               % much less than 30 fps. wihtout this it doesn't seem to work
 end% Preview
+
+fclose(s)
+delete(s)
+clear s
