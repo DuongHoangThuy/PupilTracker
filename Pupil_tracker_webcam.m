@@ -59,6 +59,10 @@ hold on;										% image will persist
 t1 = clock;                                     % initialize time
 t = 0;                                                   
 
+% we write to the file and keep..
+dlmwrite('data.txt', 'New data set', 'delimiter', '', '-append', 'newline', 'pc');
+dlmwrite('data.txt', ['Time(ms)', 'Radius (arb. units)'], 'delimiter', '\t', '-append', 'newline', 'pc');
+
 while(closeflag)                                % infinite loop
     %% first we acquire the feed and crop out unrequired parts to speed it all up
     acquired_snapshot = getsnapshot(vid);       % acquire single image from feed
@@ -84,6 +88,8 @@ while(closeflag)                                % infinite loop
       
       currentData = [etime(t2,t1)*1000, y];          % the newest entries to the data array
       pointsArray = [pointsArray; currentData];      % appending the array with the new entries
+      % using dlmwrite to append to text file
+      % http://matlab.izmiran.ru/help/techdoc/ref/dlmwrite.html
       dlmwrite('data.txt', currentData, 'delimiter', '\t', '-append', 'newline', 'pc');
       
        if t == 0
