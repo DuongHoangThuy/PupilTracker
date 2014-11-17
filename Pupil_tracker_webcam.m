@@ -15,6 +15,7 @@ clear all;
 clc;
 
 pointsArray = [];                         % creating an appendable empty array
+currentData = [];
 
 %% open the arduino object. Setup all the arduino stuff (including fixed brightness for IR LEDs and white LED
 % http://playground.arduino.cc/Interfacing/Matlab
@@ -27,6 +28,7 @@ ir = 9;
 % writing to the LED via PWM...
 writePWMDutyCycle(a, ir, ir_brightness);
 %}
+
 s = serial('COM10');      % serial communication object, change com port as needed
 fopen(s)                  % open the serial port for comm
 
@@ -74,13 +76,16 @@ while(closeflag)                                % infinite loop
       viscircles(centers, radii,'EdgeColor','b', 'LineWidth', 1);
       % disp(radii(1))                          % just seeing radii range
       % all the plotting...
-      y = radii(1);                              % radii(1) is the first returned radius, converted to y-variable
+      y = radii(1);                             % radii(1) is the first returned radius, converted to y-variable
       t2 = clock;                               % finding out the time elapsed
       drawnow
       subplot(1,2,2);
       hold on;
       
-      pointsArray = [pointsArray;[etime(t2,t1)*1000, y]];      % appending the array with the new entries
+      currentData = [etime(t2,t1)*1000, y];          % the newest entries to the data array
+      pointsArray = [pointsArray; currentData];      % appending the array with the new entries
+      dlmwrite('data.txt', currentData, 'delimiter', '\t', '-append', 'newline', 'pc');
+      
        if t == 0
          plot(pointsArray(t+1),pointsArray(t+1,2), 'linewidth',1.0),xlabel('time in ms'),ylabel('Pupil radius'); %pllotting the points by taking the value from the array
        end
