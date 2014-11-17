@@ -82,10 +82,10 @@ while(closeflag)                                % infinite loop
       
       pointsArray = [pointsArray;[etime(t2,t1)*1000, y]];      % appending the array with the new entries
        if t == 0
-         plot(pointsArray(t+1),pointsArray(t+1,2), 'linewidth',1.0),xlabel('time in 10ms'),ylabel('Pupil radius'); %pllotting the points by taking the value from the array
+         plot(pointsArray(t+1),pointsArray(t+1,2), 'linewidth',1.0),xlabel('time in ms'),ylabel('Pupil radius'); %pllotting the points by taking the value from the array
        end
        if t ~= 0 
-           plot(pointsArray(t:t+1),pointsArray(t:t+1,2), 'linewidth',1.0),xlabel('time in 10ms'),ylabel('Pupil radius');%should work on this part this should give lines
+           plot(pointsArray(t:t+1),pointsArray(t:t+1,2), 'linewidth',1.0),xlabel('time in ms'),ylabel('Pupil radius');%should work on this part this should give lines
            % plot(pointsArray(t),pointsArray(t+1,2), 'linewidth',1.0);
        end
        t = t + 1;                               % t just counts the iterations
