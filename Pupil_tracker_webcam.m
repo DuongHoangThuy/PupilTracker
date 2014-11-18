@@ -59,9 +59,17 @@ hold on;										% image will persist
 t1 = clock;                                     % initialize time
 t = 0;                                                   
 
-% we write to the file and keep..
-dlmwrite('data.txt', 'New data set', 'delimiter', '', '-append', 'newline', 'pc');
-dlmwrite('data.txt', ['Time(ms)', 'Radius (arb. units)'], 'delimiter', '\t', '-append', 'newline', 'pc');
+% Ask the user for the name of the file to write to..
+rawFileName = inputdlg('Enter file name');
+fileName0 = strcat(rawFileName(1), '.txt');    % The
+fileName = fileName0{:};                    % This needs to be done to convert cell to string, http://stackoverflow.com/questions/13258508/how-to-convert-a-cell-to-string-in-matlab
+
+% we write the header to the file and keep..
+% the at is required to open the file in text mode so that carriage return
+% and newline are recognized. http://www.mathworks.com/matlabcentral/answers/101268-why-doesn-t-the-carriage-return-or-new-line-character-in-fprintf-work-properly
+fid = fopen(fileName, 'at');
+fprintf(fid, '%s\t%s\n\r', 'Time(ms)', 'Radius (arb. units)');
+fclose(fid);
 
 while(closeflag)                                % infinite loop
     %% first we acquire the feed and crop out unrequired parts to speed it all up
@@ -90,7 +98,7 @@ while(closeflag)                                % infinite loop
       pointsArray = [pointsArray; currentData];      % appending the array with the new entries
       % using dlmwrite to append to text file
       % http://matlab.izmiran.ru/help/techdoc/ref/dlmwrite.html
-      dlmwrite('data.txt', currentData, 'delimiter', '\t', '-append', 'newline', 'pc');
+      dlmwrite(fileName, currentData, 'delimiter', '\t', '-append', 'newline', 'pc');
       
        if t == 0
          plot(pointsArray(t+1),pointsArray(t+1,2), 'linewidth',1.0),xlabel('time in ms'),ylabel('Pupil radius'); %pllotting the points by taking the value from the array
